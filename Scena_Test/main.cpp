@@ -12,14 +12,13 @@ private:
    std::vector<sf::Sprite> _cactus;
    std::vector<sf::Sprite> _blocks;
 
-
 public:
 
-    Scene(sf::Texture &texture,sf::Texture &block_Texture): window_(sf::VideoMode(1920,1080), "SCENE")
+    Scene(sf::Texture &texture,sf::Texture &Block_Texture): window_(sf::VideoMode(1920,1080), "SCENE")
     {
       this->genereteCactus(texture);
-      this->generateBlocks(block_Texture);
-    };
+      this->generateBlocks(Block_Texture);
+    }
     ~Scene()
     {
 
@@ -62,34 +61,38 @@ public:
       cactus6.setPosition(1372,800);
       cactus6.setScale(0.5,0.5);
       _cactus.emplace_back(cactus6);
+
       return _cactus;
     }
-     std::vector<sf::Sprite>generateBlocks(sf::Texture &block_Texture)
+      std::vector<sf::Sprite>generateBlocks(sf::Texture &block_Texture)
      {
          sf::Sprite block1;
          block1.setTexture(block_Texture);
-         block1.setPosition(100,100);
+         block1.setPosition(1000,1000);
          block1.setScale(0.1,0.1);
          _blocks.emplace_back(block1);
 
          sf::Sprite block2;
          block2.setTexture(block_Texture);
          block2.setPosition(100,100);
-         block2.setScale(0.1,0.1);
+         block2.setScale(1,1);
          _blocks.emplace_back(block2);
 
          return _blocks;
      }
-     //    void loadtexture()
-     //    {
-     //        sf::Texture Cactus;
-     //        if (!Cactus.loadFromFile("cactus1.png")) { return -1; }
-     //    }
+         void loadtexture()
+         {
+             sf::Texture Cactus;
+             if (!Cactus.loadFromFile("cactus1.png")) { throw("couldn't retudn"); }
+
+             sf::Texture Blocks;
+             if (!Blocks.loadFromFile("fence.png")) { throw("shit happens"); }
+         }
 
 
     void draw()
     {
-        window_.clear();
+        window_.clear(sf::Color::White);
 
         for(auto &el: _cactus)
         {
@@ -99,6 +102,7 @@ public:
         {
             window_.draw(el2);
         }
+
         window_.display();
     }
 
@@ -121,14 +125,18 @@ public:
 int main()
 {
 
+
     sf::Texture Cactus;
     if (!Cactus.loadFromFile("cactus1.png")) { return -1; }
 
     sf::Texture Blocks;
-    if (!Cactus.loadFromFile("fence.png")) { return -1; }
+    if (!Blocks.loadFromFile("fence.png")) { return -1; }
 
-    Scene Objects(Cactus,Blocks);
-    Objects.loop();
+    Scene ob(Cactus,Blocks);
+    ob.loop();
+
+
+
 
 
     return 0;
