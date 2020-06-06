@@ -10,15 +10,19 @@ class Scene
 private:
    sf::RenderWindow window_;
    std::vector<sf::Sprite> _cactus;
-   std::vector<sf::Sprite> _blocks;
+   std::vector<sf::Sprite> _fences;
+   std::vector<sf::Sprite> _background_screens;
 
 public:
 
-    Scene(sf::Texture &texture,sf::Texture &Block_Texture): window_(sf::VideoMode(1920,1080), "SCENE", sf::Style::Close | sf::Style::Titlebar)
+    Scene(sf::Texture &texture,sf::Texture &Block_Texture,sf::Texture &wooden,sf::Texture &blue,sf::Texture &red)
+        : window_(sf::VideoMode(1920,1080), "SCENE", sf::Style::Close | sf::Style::Titlebar)
     {
       window_.setVerticalSyncEnabled(true);
+
       this->genereteCactus(texture);
       this->generateBlocks(Block_Texture);
+      this->generate_bacground(wooden,blue,red);
     }
     ~Scene()
     {
@@ -71,47 +75,70 @@ public:
          block1.setTexture(block_Texture);
          block1.setPosition(930,350);
          block1.setScale(0.7,0.7);
-         _blocks.emplace_back(block1);
+         _fences.emplace_back(block1);
 
          sf::Sprite block2;
          block2.setTexture(block_Texture);
          block2.setPosition(930,650);
          block2.setScale(0.7,0.7);
-         _blocks.emplace_back(block2);
+         _fences.emplace_back(block2);
 
          sf::Sprite block3;
          block3.setTexture(block_Texture);
          block3.setPosition(930,50);
          block3.setScale(0.7,0.7);
-         _blocks.emplace_back(block3);
+         _fences.emplace_back(block3);
 
          sf::Sprite block4;
          block4.setTexture(block_Texture);
          block4.setPosition(930,950);
          block4.setScale(0.7,0.7);
-         _blocks.emplace_back(block4);
+         _fences.emplace_back(block4);
 
-         return _blocks;
+         return _fences;
      }
-//         void loadtexture()
-//         {
-//             sf::Texture Cactus;
-//             if (!Cactus.loadFromFile("cactus1.png")) { throw("couldn't retudn"); }
 
-//             sf::Texture Blocks;
-//             if (!Blocks.loadFromFile("fence.png")) { throw("shit happens"); }
-//         }
+     std::vector<sf::Sprite>generate_bacground(sf::Texture &Wooden,sf::Texture &Blue,sf::Texture &Red)
+     {
+
+
+         sf::Sprite Red_Background;
+         Red_Background.setTexture(Red);
+         Red_Background.setPosition(0,0);
+         Red_Background.setTextureRect(sf::IntRect(0,0,1920,1080));
+         _background_screens.emplace_back(Red_Background);
+
+         sf::Sprite Blue_Background;
+         Blue_Background.setTexture(Blue);
+         Blue_Background.setPosition(0,0);
+         Blue_Background.setTextureRect(sf::IntRect(0,0,1920,1080));
+         _background_screens.emplace_back(Blue_Background);
+
+         sf::Sprite wooden_background;
+         wooden_background.setTexture(Wooden);
+         wooden_background.setPosition(100,100);
+         wooden_background.setTextureRect(sf::IntRect(0,0,1920,1080));
+         _background_screens.emplace_back(Wooden);
+
+
+         return _background_screens;
+
+     }
 
 
     void draw()
     {
         window_.clear();
 
+        for(auto &el3:_background_screens)
+        {
+            window_.draw(el3);
+        }
         for(auto &el: _cactus)
         {
             window_.draw(el);
         }
-        for(auto &el2: _blocks)
+        for(auto &el2: _fences)
         {
             window_.draw(el2);
         }
@@ -134,18 +161,45 @@ public:
         }
     }
 };
+//         void loadtexture()
+//         {
+//             sf::Texture Cactus;
+//             if (!Cactus.loadFromFile("cactus1.png")) { throw("couldn't retudn"); }
+
+//             sf::Texture Blocks;
+//             if (!Blocks.loadFromFile("fence.png")) { throw("shit happens"); }
+//         }
 
 int main()
 {
 
+    sf::Texture Wooden_Backround;
+    Wooden_Backround.setRepeated(true);
+    if (!Wooden_Backround.loadFromFile("drewniane_tlo.png")) { return -1; }
+
+    sf::Texture Blue_Background;
+    Blue_Background.setRepeated(true);
+    if (!Blue_Background.loadFromFile("niebieskie_tlo.png")) { return -1; }
+
+    sf::Texture Red_Background;
+    Red_Background.setRepeated(true);
+    if (!Red_Background.loadFromFile("czerwone_tlo.png")) { return -1; }
+
+
     sf::Texture Cactus;
+    Cactus.setSrgb(true);
     if (!Cactus.loadFromFile("cactus1.png")) { return -1; }
 
     sf::Texture Blocks;
+    Blocks.setSrgb(true);
     if (!Blocks.loadFromFile("fence.png")) { return -1; }
 
-    Scene ob(Cactus,Blocks);
+
+    Scene ob(Cactus,Blocks,Wooden_Backround,Blue_Background,Red_Background);
+    //ob.generate_bacground(Wooden_Backround,Blue_Background,Red_Background);
     ob.loop();
+
+
 
 
     return 0;
