@@ -116,9 +116,9 @@ public:
 
          sf::Sprite wooden_background;
          wooden_background.setTexture(Wooden);
-         wooden_background.setPosition(100,100);
+         wooden_background.setPosition(0,0);
          wooden_background.setTextureRect(sf::IntRect(0,0,1920,1080));
-         _background_screens.emplace_back(Wooden);
+         _background_screens.emplace_back(wooden_background);
 
 
          return _background_screens;
